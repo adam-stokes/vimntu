@@ -2,24 +2,27 @@
 
 use strict;
 use warnings;
-use 5.014;
+use 5.008;
 use YAML;
 use File::chdir;
-use File::Spec 3.4;
-use Path::Tiny;
+use File::Spec::Functions qw[catdir catfile];
+use File::Slurp;
+use File::HomeDir;
 
 sub initialize {
 	my ($conf) = @_;
-	die("you need to remove .vim to proceed.") unless ! path("~/.vim")->is_dir;
+	my $home = File::HomeDir->my_home;
+	my $vimrc = catfile($home, ".vimrc");
+	die("you need to remove .vim to proceed.") unless ! -d catdir($home, ".vim");
 	foreach (@{$conf->{script}}) {
-		say "running: $_";
+		print "running: $_\n";
 		`$_`;
 	}
 	local $CWD = $ENV{HOME}.'/.vim/bundle';
 	foreach (@{$conf->{plugins}}) {
 		`git clone -q $_`;
 	}
-	path("~/.vimrc")->spew_raw($conf->{config});
+	write_file($vimrc, {binmode => ':raw'}, $conf->{config});
 }
 
 ###############################################################################
@@ -44,7 +47,7 @@ config: |
   set list
   set listchars=tab:.\ ,trail:.,extends:#,nbsp:.
   if has("gui_running")
-    set guifont=Ubuntu\ Mono\ 13
+    set guifont=Monospace\ 10
     set list
     set listchars=tab:▸\ ,eol:¬,extends:#,nbsp:.,trail:.
     set guioptions-=r
