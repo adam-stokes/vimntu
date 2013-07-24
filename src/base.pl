@@ -12,17 +12,18 @@ use File::HomeDir;
 sub initialize {
 	my ($conf) = @_;
 	my $home = File::HomeDir->my_home;
-	my $vimrc = catfile($home, ".vimrc");
-	die("you need to remove .vim to proceed.") unless ! -d catdir($home, ".vim");
+	my $vimrcafter = catfile($home, ".vimrc.after");
+	my $gvimrcafter = catfile($home, ".gvimrc.after");
 	foreach (@{$conf->{script}}) {
 		print "running: $_\n";
 		`$_`;
 	}
-	local $CWD = $ENV{HOME}.'/.vim/bundle';
+  local $CWD = catdir($home, '.janus');
 	foreach (@{$conf->{plugins}}) {
 		`git clone -q $_`;
 	}
-	write_file($vimrc, {binmode => ':raw'}, $conf->{config});
+	write_file($vimrcafter, {binmode => ':raw'}, $conf->{vimrcafter});
+	write_file($gvimrcafter, {binmode => ':raw'}, $conf->{gvimrcafter});
 }
 
 ###############################################################################
@@ -32,13 +33,9 @@ my $vim_conf = YAML::Load << '...';
 ---
 name: vim
 description: VIM Text Editor and plugins
-config: |
-  execute pathogen#infect()
-  syntax on
-  filetype plugin indent on
-  
+vimrcafter: |
+  color jellybeans
   set background=dark
-  colorscheme jellybeans
   set textwidth=79
   set formatoptions=qrn1
   if exists('+colorcolumn')
@@ -46,6 +43,11 @@ config: |
   endif
   set list
   set listchars=tab:.\ ,trail:.,extends:#,nbsp:.
+  set numberwidth=5
+  set cursorline
+  set cursorcolumn
+gvimrcafter: |
+  color jellybeans
   if has("gui_running")
     set guifont=Monospace\ 10
     set list
@@ -54,41 +56,9 @@ config: |
     set go-=L
     set go-=T
   endif
-  
-  set numberwidth=5
-  set cursorline
-  set cursorcolumn
-  set guicursor+=a:blinkon0
-  nmap <c-up> ddkP
-  nmap <c-down> dd
-  nmap + <c-w>+
-  nmap _ <c-w>-
-  nmap > <c-w>>
-  nmap < <c-w><
-  vmap <c-up> xkP`[V`]
-  vmap <c-down> xp`[V`]
-  
-  au BufEnter * silent! lcd %:p:h " auto change directory of current file
-  au WinLeave * set nocursorline nocursorcolumn
-  au WinEnter * set cursorline cursorcolumn
-  set cursorline cursorcolumn
-  if ! has('gui_running')
-      set ttimeoutlen=10
-      augroup FastEscape
-  	autocmd!
-  	au InsertEnter * set timeoutlen=0
-  	au InsertLeave * set timeoutlen=1000
-      augroup END
-  endif
-  autocmd GUIEnter * set vb t_vb= " for your GUI
-  autocmd VimEnter * set vb t_vb=
-packages:
-  - vim
-  - vim-gtk
 plugins:
   - git://github.com/antono/html.vim
   - git://github.com/juvenn/mustache.vim
-  - git://github.com/kien/ctrlp.vim
   - git://github.com/klen/python-mode
   - git://github.com/nanotech/jellybeans.vim
   - git://github.com/othree/html5.vim
@@ -108,16 +78,15 @@ plugins:
   - git://github.com/tpope/vim-unimpaired
   - git://github.com/vim-perl/vim-perl
   - git://github.com/vim-ruby/vim-ruby
-  - git://github.com/vim-scripts/taglist.vim
   - git://github.com/vimoutliner/vimoutliner
   - git://github.com/bling/vim-airline
   - git://github.com/Yggdroot/indentLine
 script:
-  - sudo apt-get update
-  - sudo apt-get -y install vim vim-gtk ctags vim-doc vim-scripts cscope ttf-dejavu indent python-software-properties git
-  - mkdir -p ~/.vim/autoload ~/.vim/bundle
-  - curl -Sso ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+  - sudo apt-get -y install python-software-properties
   - sudo apt-add-repository -y ppa:nmi/vim-snapshots
+  - sudo apt-get update
+  - sudo apt-get -y install vim vim-gtk git
+  - curl -Lo- https://bit.ly/janus-bootstrap | bash
 ...
 
 ###############################################################################
