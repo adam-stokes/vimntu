@@ -81,7 +81,7 @@ script:
   - sudo apt-get -y install python-software-properties
   - sudo apt-add-repository -y ppa:nmi/vim-snapshots
   - sudo apt-get update
-  - sudo apt-get -y install vim vim-gtk git
+  - sudo apt-get -y install vim vim-gtk git ctags ruby1.9.1 rake
   - curl -Lo- https://bit.ly/janus-bootstrap | bash
 ...
 
