@@ -58,11 +58,10 @@ gvimrcafter: |
   endif
 plugins:
   - git://github.com/antono/html.vim
-  - git://github.com/juvenn/mustache.vim
+  - git://github.com/bling/vim-airline
   - git://github.com/klen/python-mode
   - git://github.com/nanotech/jellybeans.vim
   - git://github.com/othree/html5.vim
-  - git://github.com/pangloss/vim-javascript
   - git://github.com/rodjek/vim-puppet
   - git://github.com/sickill/vim-pasta
   - git://github.com/tpope/vim-bundler
@@ -70,16 +69,13 @@ plugins:
   - git://github.com/tpope/vim-eunuch
   - git://github.com/tpope/vim-fugitive
   - git://github.com/tpope/vim-haml
-  - git://github.com/tpope/vim-markdown
   - git://github.com/tpope/vim-rails
   - git://github.com/tpope/vim-scriptease
   - git://github.com/tpope/vim-sensible
   - git://github.com/tpope/vim-surround
-  - git://github.com/tpope/vim-unimpaired
+  - git://github.com/vimoutliner/vimoutliner
   - git://github.com/vim-perl/vim-perl
   - git://github.com/vim-ruby/vim-ruby
-  - git://github.com/vimoutliner/vimoutliner
-  - git://github.com/bling/vim-airline
   - git://github.com/Yggdroot/indentLine
 script:
   - sudo apt-get -y install python-software-properties
