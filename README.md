@@ -2,6 +2,7 @@ quick script to install and load my favorite vim stuff.
 
 ## dependencies installed
 
++ [janus](https://github.com/carlhuda/janus) as a base
 + python-software-properties
 + ppa:nmi/vim-snapshots # Latest development release
 + git
