@@ -113,11 +113,11 @@ plugins:
   - git://github.com/bling/vim-airline
   - git://github.com/Yggdroot/indentLine
 script:
+  - sudo apt-get update
+  - sudo apt-get -y install vim vim-gtk ctags vim-doc vim-scripts cscope ttf-dejavu indent python-software-properties git
   - mkdir -p ~/.vim/autoload ~/.vim/bundle
   - curl -Sso ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
   - sudo apt-add-repository -y ppa:nmi/vim-snapshots
-  - sudo apt-get update
-  - sudo apt-get -y install vim vim-gtk ctags vim-doc vim-scripts cscope ttf-dejavu indent
 ...
 
 ###############################################################################
