@@ -19,7 +19,7 @@ sub initialize {
 		print "running: $_\n";
 		`$_`;
 	}
-  make_path(catdir($home, '.janus'));
+  make_path(catdir($home, '.janus')) unless -d catdir($home, '.janus');
   local $CWD = catdir($home, '.janus');
 	foreach (@{$conf->{plugins}}) {
 		`git clone -q $_`;
