@@ -5,6 +5,7 @@ use warnings;
 use 5.014;
 use YAML;
 use File::chdir;
+use File::Spec 3.4;
 use Path::Tiny;
 
 sub initialize {
