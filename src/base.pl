@@ -5,6 +5,7 @@ use warnings;
 use 5.008;
 use YAML;
 use File::chdir;
+use File::Path qw(make_path);
 use File::Spec::Functions qw[catdir catfile];
 use File::Slurp;
 use File::HomeDir;
@@ -18,6 +19,7 @@ sub initialize {
 		print "running: $_\n";
 		`$_`;
 	}
+  make_path(catdir($home, '.janus'));
   local $CWD = catdir($home, '.janus');
 	foreach (@{$conf->{plugins}}) {
 		`git clone -q $_`;
