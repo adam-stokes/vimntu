@@ -37,7 +37,6 @@ name: vim
 description: VIM Text Editor and plugins
 vimrcafter: |
   color jellybeans
-  set background=dark
   set textwidth=79
   set formatoptions=qrn1
   if exists('+colorcolumn')
