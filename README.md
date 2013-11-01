@@ -23,3 +23,7 @@ gvim file
 ```
 
 off you go
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/battlemidget/vimntu/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
