@@ -79,6 +79,7 @@ plugins:
   - git://github.com/vim-ruby/vim-ruby
   - git://github.com/Yggdroot/indentLine
   - git://github.com/yko/mojo.vim
+  - git://github.com/digitaltoad/vim-jade
 script:
   - sudo apt-get -y install python-software-properties
   - sudo apt-add-repository -y ppa:nmi/vim-snapshots
