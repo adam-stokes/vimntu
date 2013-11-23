@@ -80,6 +80,7 @@ plugins:
   - git://github.com/Yggdroot/indentLine
   - git://github.com/yko/mojo.vim
   - git://github.com/digitaltoad/vim-jade
+  - git@github.com:wavded/vim-stylus
 script:
   - sudo apt-get -y install python-software-properties
   - sudo apt-add-repository -y ppa:nmi/vim-snapshots
