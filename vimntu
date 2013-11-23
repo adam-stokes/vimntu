@@ -69,7 +69,7 @@ install_janus() {
     else
       echo "No curl/wget found, install with apt-get install curl"
       return 1
-   fi ) &> /dev/null
+    fi ) &> /dev/null
   echo "Installing custom vim configs"
   if [ ! -f ${VIMRCPATH} ]; then
     echo "${VIMRCAFTER}" > ${VIMRCPATH}
