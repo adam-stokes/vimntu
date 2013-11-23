@@ -3,7 +3,7 @@
 # author: Adam Stokes <adam.stokes@ubuntu.com>
 ###############################################################################
 
-set -eux
+set -x
 
 VIMRCPATH=${HOME}/.vimrc.after
 GVIMRCPATH=${HOME}/.gvimrc.after
@@ -14,7 +14,7 @@ if [[ ! -d ${JANUSPATH} ]]; then
 fi
 
 # VIMRC config
-VIMRCAFTER=$(cat <<EOF
+read -r -d '' VIMRCAFTER <<'EOT'
 color jellybeans
 set textwidth=79
 set formatoptions=qrn1
@@ -26,11 +26,10 @@ set listchars=tab:.\ ,trail:.,extends:#,nbsp:.
 set numberwidth=5
 set cursorline
 set cursorcolumn
-EOF
-)
+EOT
 
 # GVIMRC config
-GVIMRCAFTER=$(cat <<EOF
+read -r -d '' GVIMRCAFTER <<'EOT'
 color jellybeans
 if has("gui_running")
   set guifont=Monospace\ 10
@@ -40,47 +39,48 @@ if has("gui_running")
   set go-=L
   set go-=T
 endif
-EOF
-)
+EOT
 
 install_pkgs() {
-  let RET=0
-  let packages=(vim \
+  packages=(vim \
     vim-gtk \
     git \
     ctags \
     ruby1.9.1 \
     rake
   )
-  sudo apt-get update -y
-
   # only install packages we need
   for i in "${packages[@]}"
   do
-    RET=$(dpkg -l ${i})
-    if [ ${RET} -eq 1 ]; then
-      sudo apt-get -y ${i}
+    dpkg -l ${i} &> /dev/null
+    RET=$?
+    if [[ "$RET" -eq "1" ]]; then
+      sudo apt-get -y -qq --force-yes ${i}
     fi
   done
 }
 
 install_janus() {
-  if [ -d ${JANUSPATH} ]; then
-    # janus already installed, update instead
-    cd ${JANUSPATH} && git pull && return
+  echo "Installing janus"
+  ( if [ -x /usr/bin/curl ]; then
+      curl -Lo- https://bit.ly/janus-bootstrap | bash
+    elif [ -x /usr/bin/wget ]; then
+      wget --no-check-certificate https://bit.ly/janus-bootstrap -O - | bash
+    else
+      echo "No curl/wget found, install with apt-get install curl"
+      return 1
+   fi ) &> /dev/null
+  echo "Installing custom vim configs"
+  if [ ! -f ${VIMRCPATH} ]; then
+    echo "${VIMRCAFTER}" > ${VIMRCPATH}
   fi
-  if [ -x /usr/bin/curl ]; then
-    curl -Lo- https://bit.ly/janus-bootstrap | bash
-  elif [ -x /usr/bin/wget ]; then
-    wget --no-check-certificate https://bit.ly/janus-bootstrap -O - | bash
-  else
-    echo "No curl/wget found, install with apt-get install curl"
-    return 1
+  if [ ! -f ${GVIMRCPATH} ]; then
+    echo "${GVIMRCAFTER}" > ${GVIMRCPATH}
   fi
 }
 
 install_git_pkgs() {
-  let packages=(
+  packages=(
     git://github.com/antono/html.vim \
     git://github.com/bling/vim-airline \
     git://github.com/klen/python-mode \
@@ -107,12 +107,13 @@ install_git_pkgs() {
   )
   for i in "${packages[@]}"
   do
+    echo "Installing plugin: $(basename ${i})"
     # only if url ends with .git
     # _dir="${i##*/}"
     if [ -d ${i} ]; then
-      cd ${JANUSPATH}/${i} && git pull
+      cd ${JANUSPATH}/${i} && git pull -q
     else
-      cd ${JANUSPATH} && git clone ${i}
+      cd ${JANUSPATH} && git clone -q ${i}
     fi
   done
 }
