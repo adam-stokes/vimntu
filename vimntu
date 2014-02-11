@@ -43,10 +43,10 @@ EOT
 
 install_pkgs() {
   packages=(vim \
-    vim-gtk \
+    "vim-gtk" \
     git \
     ctags \
-    ruby1.9 \
+    "ruby1.9.1-full" \
     rake
   )
   # only install packages we need
