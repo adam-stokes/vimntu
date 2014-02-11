@@ -46,7 +46,7 @@ install_pkgs() {
     vim-gtk \
     git \
     ctags \
-    ruby1.9.1 \
+    ruby1.9 \
     rake
   )
   # only install packages we need
@@ -103,7 +103,7 @@ install_git_pkgs() {
     git://github.com/Yggdroot/indentLine \
     git://github.com/yko/mojo.vim \
     git://github.com/digitaltoad/vim-jade \
-    git@github.com:wavded/vim-stylus
+    git://github.com:wavded/vim-stylus
   )
   for i in "${packages[@]}"
   do
