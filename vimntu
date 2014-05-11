@@ -55,7 +55,7 @@ install_pkgs() {
     dpkg -l ${i} &> /dev/null
     RET=$?
     if [[ "$RET" -eq "1" ]]; then
-      sudo apt-get -y -qq --force-yes ${i}
+      sudo apt-get -y -qq --force-yes install ${i}
     fi
   done
 }
